@@ -10,7 +10,7 @@ def fetch_stories(limit=5, comments_limit=3):
     )
 
     subreddit = reddit.subreddit("TwoHotTakes")
-    posts = subreddit.top(time_filter="week", limit=limit)
+    posts = subreddit.top(time_filter="day", limit=limit)
 
     stories = []
     for post in posts:
@@ -18,14 +18,14 @@ def fetch_stories(limit=5, comments_limit=3):
         post_text = post.selftext.strip()
 
         # Get top comments if any
-        post.comments.replace_more(limit=0)
-        top_comments = post.comments[:comments_limit]
-        comments_texts = [comment.body for comment in top_comments]
+        # post.comments.replace_more(limit=0)
+        # top_comments = post.comments[:comments_limit]
+        # comments_texts = [comment.body for comment in top_comments]
 
         stories.append({
             "title": post.title,
             "text": post_text,
-            "comments": comments_texts,
+            # "comments": comments_texts,
         })
 
     return stories

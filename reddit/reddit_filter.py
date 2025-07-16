@@ -2,8 +2,8 @@ from llm import LLMClient
 
 llm = LLMClient()
 
-def reddit_interest_prompt(title: str, text: str, comments: list[str]) -> str:
-    comments_text = "\n".join(comments) if comments else "[No comments]"
+def reddit_interest_prompt(title: str, text: str) -> str:#,comments: list[str]) -> str:
+    # comments_text = "\n".join(comments) if comments else "[No comments]"
     return f"""
         You are a helpful assistant that evaluates Reddit stories for their potential to be good TikTok/Instagram/Shorts videos.
         You must determine if the provided content is interesting enough to be made into a short video. If a story is provided, evaluate it based on the title, text, and top comments.
@@ -53,11 +53,15 @@ def reddit_interest_prompt(title: str, text: str, comments: list[str]) -> str:
 
             Sometimes the wrong funeral is exactly where you're meant to be."
 
+        Answer: "YES 0.85"
+
         Story title: "What is the American equivalent to breaking Spaghetti in front of Italians?"
 
         Comments: "There was a guy on TikTok visiting from the UK and they went to a Mexican restaurant and poured the salsa over the chips in the basket. That did me in.",
                 "Ketchup on your prime rib!",
                 "I watched a guy feom NJ roll a NY style pizza from tip to crust and eat it like a burrito. I saw a NY guy watch that, and I saw his soul leave his body that day."
+
+        Answer: "YES 0.75"
 
         Story title: "My boyfriend used a hidden camera to prove I was “Faking” my period pain"    
 
@@ -75,6 +79,19 @@ def reddit_interest_prompt(title: str, text: str, comments: list[str]) -> str:
 
         I packed a bag and left that night. Guess who's now single and filing a report."
 
+        Answer: YES 0.95
+
+        
+        Story title: "Why do people sneeze?"
+        Story text: ""
+        Comments: ["It’s biology.", "Dust?", "Google it."]
+        Answer: "NO 0.95"
+
+        Story title: "I finally cleaned out my fridge"
+        Story text: "Spent all Saturday morning tossing out expired stuff. Found pickles from 2020. Gross."
+        Comments: [""Good for you!","That’s adulting for ya", "I did that last week too lol"]
+       
+        Answer: "NO 0.90"
 
     
         Based on what I have told you and the examples above, please evaluate the following story:
@@ -85,15 +102,12 @@ def reddit_interest_prompt(title: str, text: str, comments: list[str]) -> str:
         Story text:
         {text if text else '[No post text]'}
 
-        Top comments:
-        {comments_text}
-
         Question: Based on the above, answer with "YES" if this story would be interesting enough to make a short TikTok video, or "NO" if it wouldn't.
         Only reply with YES or NO and with a confidence score from 0 to 1. The output should look like this: "YES 0.95" or "NO 0.83".
         """
 
-def is_story_interesting(title: str, text: str, comments: list[str]) -> bool:
-    prompt = reddit_interest_prompt(title, text, comments)
+def is_story_interesting(title: str, text: str) -> bool:#, comments: list[str]) -> bool:
+    prompt = reddit_interest_prompt(title, text)#, comments)
     response = llm.generate(prompt, temperature=0.7, max_tokens=50)
     parts = response.strip().split()
 
