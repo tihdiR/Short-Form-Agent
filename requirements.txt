@@ -1,3 +1,4 @@
 praw
 python-dotenv
 google-genai
+elevenlabs

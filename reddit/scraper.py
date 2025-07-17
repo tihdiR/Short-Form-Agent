@@ -1,6 +1,9 @@
 # reddit_scraper/scraper.py
 import os
 import praw
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 def fetch_stories(limit=5, comments_limit=3):
     reddit = praw.Reddit(

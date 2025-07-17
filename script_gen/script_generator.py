@@ -21,8 +21,8 @@ def reddit_to_script(title: str, text: str) -> str:#, comments: list[str]) -> st
         - If there is not enough content to reach 1 minute, add additional context or details to flesh it out
 
         Respond with ONLY the script in this format with the text formatted to be input into a text to speech system.
-        Put a @ after the title as a special marker:
-        "[Edited title here]@
+        Put a '.' after the title:
+        "[Edited title here].
         [Edited story here]"
     """
 
