@@ -1,59 +1,3 @@
-# from datetime import timedelta
-
-# def format_srt_time(seconds):
-#     td = timedelta(seconds=seconds)
-#     total_seconds = int(td.total_seconds())
-#     ms = int((td.total_seconds() - total_seconds) * 1000)
-#     return f"{str(td)}".zfill(8).replace('.', ',')[:-3] + f",{ms:03d}"
-
-# def convert_to_srt(alignment_data, max_words_per_caption=8):
-#     chars = alignment_data['characters']
-#     starts = alignment_data['character_start_times_seconds']
-#     ends = alignment_data['character_end_times_seconds']
-
-#     words = []
-#     current_word = ""
-#     current_start = None
-#     current_end = None
-
-#     for i, char in enumerate(chars):
-#         if current_word == "":
-#             current_start = starts[i]
-
-#         current_word += char
-#         current_end = ends[i]
-
-#         if char in " \n.,;!?":  # Treat punctuation as word end
-#             words.append({
-#                 "text": current_word.strip(),
-#                 "start": current_start,
-#                 "end": current_end
-#             })
-#             current_word = ""
-
-#     # Group into captions
-#     captions = []
-#     current_caption = []
-#     for word in words:
-#         current_caption.append(word)
-#         if len(current_caption) >= max_words_per_caption:
-#             captions.append(current_caption)
-#             current_caption = []
-
-#     if current_caption:
-#         captions.append(current_caption)
-
-#     # Create SRT
-#     srt = ""
-#     for i, caption in enumerate(captions):
-#         start = format_srt_time(caption[0]['start'])
-#         end = format_srt_time(caption[-1]['end'])
-#         text = ' '.join([w['text'] for w in caption])
-
-#         srt += f"{i+1}\n{start} --> {end}\n{text.strip()}\n\n"
-
-#     return srt
-
 from datetime import timedelta
 
 def format_srt_time(seconds):
@@ -80,7 +24,7 @@ def format_srt_time(seconds):
     # Format as HH:MM:SS,ms with leading zeros
     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
 
-def convert_to_srt(alignment_data, max_words_per_caption=8):
+def convert_to_srt(alignment_data, max_words_per_caption=2):
     """
     Converts character-level alignment data into an SRT subtitle string.
 

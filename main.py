@@ -6,49 +6,52 @@ from script_gen.script_generator import reddit_to_script
 from video_creator.tts import TTSClient
 from video_creator.srt import convert_to_srt
 
+from video_creator.background_video import prepare_background_video
+from pydub import AudioSegment
+
 
 
 if __name__ == "__main__":
-    print("🚀 Starting scraper...")
+    # print("🚀 Starting scraper...")
 
-    stories = fetch_stories(limit=1)
+    # stories = fetch_stories(limit=1)
 
-    for i, story in enumerate(stories):
-        print(f"\n📝 Story #{i+1}")
+    # for i, story in enumerate(stories):
+    #     print(f"\n📝 Story #{i+1}")
 
-        # OLD
-        # print(f"Title: {story['title']}")
-        # print(f"Text: {story['text'] or '[No post text]'}\n")
+    #     # OLD
+    #     # print(f"Title: {story['title']}")
+    #     # print(f"Text: {story['text'] or '[No post text]'}\n")
 
-        # if story['comments']:
-        #     print("Top comments:")
-        #     for j, comment in enumerate(story['comments']):
-        #         print(f"  {j+1}. {comment}\n")
-        # else:
-        #     print("No comments available.\n")
+    #     # if story['comments']:
+    #     #     print("Top comments:")
+    #     #     for j, comment in enumerate(story['comments']):
+    #     #         print(f"  {j+1}. {comment}\n")
+    #     # else:
+    #     #     print("No comments available.\n")
 
-        interesting, confidence = is_story_interesting(story['title'], story['text'])#, story['comments'])
-        print("interesting: ", interesting)
-        print("confidence: ", confidence)
-        script = ""
-        if interesting:
-            script = reddit_to_script(story['title'], story['text'])
-            print(script)
-        else:
-            print("NOT INTERESTING ENOUGH")
+    #     interesting, confidence = is_story_interesting(story['title'], story['text'])#, story['comments'])
+    #     print("interesting: ", interesting)
+    #     print("confidence: ", confidence)
+    #     script = ""
+    #     if interesting:
+    #         script = reddit_to_script(story['title'], story['text'])
+    #         print(script)
+    #     else:
+    #         print("NOT INTERESTING ENOUGH")
         
-        # text = "Hello i am a test"
-        tts = TTSClient()
-        result = tts.generate_audio_with_timing(script)
-        print("✅ Audio generated with timing data.")
-        # print(result)
-        # Save audio to file
+    #     # text = "Hello i am a test"
+    #     tts = TTSClient()
+    #     result = tts.generate_audio_with_timing(script)
+    #     print("✅ Audio generated with timing data.")
+    #     # print(result)
+    #     # Save audio to file
 
-        audio_data = base64.b64decode(result.audio_base_64)
-        alignment = result.normalized_alignment
-        print("-------------- ALIGNMENT: ", alignment)
-        with open("output.wav", "wb") as f:
-            f.write(audio_data)
+    #     audio_data = base64.b64decode(result.audio_base_64)
+    #     alignment = result.normalized_alignment
+    #     print("-------------- ALIGNMENT: ", alignment)
+    #     with open("output.wav", "wb") as f:
+    #         f.write(audio_data)
 
         # alignment = {"characters":[' ', 'H', 'e', 'l', 'l', 'o', ' ', 'i', ' ', 'a', 'm', ' ', 'a', ' ', 't', 'e', 's', 't', ' '],
         #     "character_start_times_seconds":[0.0, 0.058, 0.093, 0.151, 0.186, 0.244, 0.395, 0.522, 0.58, 0.639, 0.685, 0.731, 0.778, 0.801, 0.859, 0.906, 1.022, 1.103, 1.149], 
@@ -84,12 +87,18 @@ if __name__ == "__main__":
         # }
         
         # Save SRT subtitles from timing data
-        srt = convert_to_srt(alignment)
+        # srt = convert_to_srt(alignment)
 
-        with open("output.srt", "w") as f:
-            f.write(srt)
+        # with open("output.srt", "w") as f:
+        #     f.write(srt)
 
-        print("✅ Audio and subtitles saved.")
+        # print("✅ Audio and subtitles saved.")
 
+        audio = AudioSegment.from_file("output.wav")
+        duration = len(audio) / 1000  # seconds
+        print(f"🎵 Audio duration: {duration:.2f} seconds")
+        # Generate background video
+        background_video_path = prepare_background_video(duration, category="minecraft_test")
+        print(f"✅ Background video ready: {background_video_path}")
     
     
