@@ -8,8 +8,9 @@ from video_creator.srt import convert_to_srt
 from video_creator.srt import convert_to_srt_story
 from video_creator.captions import caption_video
 from video_creator.stitch_audio import add_audio  
-
+from video_creator.title_image import draw_title_on_template, add_title_to_video
 from video_creator.background_video import prepare_background_video
+
 from pydub import AudioSegment
 
 
@@ -64,40 +65,11 @@ if __name__ == "__main__":
         alignment = {"characters":[' ', 'H', 'e', 'l', 'l', 'o', ' ', 'i', ' ', 'a', 'm', ' ', 'a', ' ', 't', 'e', 's', 't', ' '],
             "character_start_times_seconds":[0.0, 0.058, 0.093, 0.151, 0.186, 0.244, 0.395, 0.522, 0.58, 0.639, 0.685, 0.731, 0.778, 0.801, 0.859, 0.906, 1.022, 1.103, 1.149], 
             "character_end_times_seconds":[0.058, 0.093, 0.151, 0.186, 0.244, 0.395, 0.522, 0.58, 0.639, 0.685, 0.731, 0.778, 0.801, 0.859, 0.906, 1.022, 1.103, 1.149, 1.486]}
-        # alignment = {
-        #     "characters": [
-        #         'T', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ', 'l', 'o', 'n', 'g', 'e', 'r', ' ', 
-        #         'e', 'x', 'a', 'm', 'p', 'l', 'e', ' ', 
-        #         's', 'e', 'n', 't', 'e', 'n', 'c', 'e', ' ', 
-        #         'f', 'o', 'r', ' ', 
-        #         's', 'u', 'b', 't', 'i', 't', 'l', 'e', ' ', 
-        #         'a', 'l', 'i', 'g', 'n', 'm', 'e', 'n', 't', ' ', 
-        #         't', 'e', 's', 't', 'i', 'n', 'g', '.'
-        #     ],
-        #     "character_start_times_seconds": [
-        #         0.0, 0.04, 0.08, 0.12, 0.16, 0.20, 0.24, 0.28, 0.32, 0.36,
-        #         0.40, 0.44, 0.48, 0.52, 0.56, 0.60, 0.64, 0.68, 0.72, 0.76,
-        #         0.80, 0.84, 0.88, 0.92, 0.96, 1.00, 1.04, 1.08, 1.12, 1.16,
-        #         1.20, 1.24, 1.28, 1.32, 1.36, 1.40, 1.44, 1.48, 1.52, 1.56,
-        #         1.60, 1.64, 1.68, 1.72, 1.76, 1.80, 1.84, 1.88, 1.92, 1.96,
-        #         2.00, 2.04, 2.08, 2.12, 2.16, 2.20, 2.24, 2.28, 2.32, 2.36,
-        #         2.40, 2.44, 2.48, 2.52, 2.56, 2.60
-        #     ],
-        #     "character_end_times_seconds": [
-        #         0.04, 0.08, 0.12, 0.16, 0.20, 0.24, 0.28, 0.32, 0.36, 0.40,
-        #         0.44, 0.48, 0.52, 0.56, 0.60, 0.64, 0.68, 0.72, 0.76, 0.80,
-        #         0.84, 0.88, 0.92, 0.96, 1.00, 1.04, 1.08, 1.12, 1.16, 1.20,
-        #         1.24, 1.28, 1.32, 1.36, 1.40, 1.44, 1.48, 1.52, 1.56, 1.60,
-        #         1.64, 1.68, 1.72, 1.76, 1.80, 1.84, 1.88, 1.92, 1.96, 2.00,
-        #         2.04, 2.08, 2.12, 2.16, 2.20, 2.24, 2.28, 2.32, 2.36, 2.40,
-        #         2.44, 2.48, 2.52, 2.56, 2.60, 2.64
-        #     ]
-        # }
-
-        # title_len = len(f"{script['title']}. ")  # Adjust as needed based on your formatting
+        
+        title_len = len(f"{script['title']}. ")  # Adjust as needed based on your formatting
 
         # # 2. Get the time the title ends
-        # offset_seconds = alignment['character_end_times_seconds'][title_len] 
+        offset_seconds = alignment['character_end_times_seconds'][title_len] 
         # print(f"Title ends at {offset_seconds:.2f} seconds")
         
         # # story_chars = alignment['characters'][title_len:]
@@ -122,9 +94,7 @@ if __name__ == "__main__":
         # with open("output_new.srt", "w") as f:
         #     f.write(srt)
 
-        caption_video("output/background_minecraft_test.mp4", "output/output_new.srt", "output/subtitled_video.mp4")
-        add_audio("output/subtitled_video.mp4", "output/output.wav", "output/subtitled_video.mp4")
-        # print("✅ Audio and subtitles saved.")
+       
 
         # audio = AudioSegment.from_file("output/output.wav")
 
@@ -133,5 +103,25 @@ if __name__ == "__main__":
         # # Generate background video
         # background_video_path = prepare_background_video(duration, category="minecraft_test")
         # print(f"✅ Background video ready: {background_video_path}")
-    
+
+        caption_video("output/background_minecraft_test.mp4", "output/output_new.srt", "output/subtitled_video.mp4")
+
+        add_title_to_video(
+            video_path="output/subtitled_video.mp4",
+            title_frame="output/title_frame.png",
+            output_path="output/subtitled_video.mp4",
+            duration = offset_seconds
+        )
+
+        add_audio("output/subtitled_video.mp4", "output/output.wav", "output/final_video.mp4")
+        # print("✅ Audio and subtitles saved.")
+
+        # draw_title_on_template(
+        #     # template_path="assets/reddit_title_template.png",
+        #     template_path="assets/title_template2.png",
+        #     title_text=script['title'],
+        #     output_path="output/title_frame.png",
+        # )
+
+
     

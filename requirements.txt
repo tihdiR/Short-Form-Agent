@@ -6,3 +6,4 @@ yt_dlp
 moviepy
 pydub
 pysrt
+PIL
