@@ -76,25 +76,8 @@ def draw_title_on_template(template_path, title_text, output_path, font_size=47,
 
     img.save(output_path)
 
-    # # Create a drawable object
-    # draw = ImageDraw.Draw(img)
 
-    # # Load font
-    # font = ImageFont.truetype(font_path or "arial.ttf", font_size)
-
-    # # Define text position (centered at top by default)
-    # text_width, text_height = draw.textsize(title_text, font=font)
-    # x = (img.width - text_width) // 2
-    # y = img.height // 2  # adjust this based on your template
-
-    # # Draw text
-    # draw.text((x, y), title_text, font=font, fill="black")
-
-    # # Save image
-    # img.save(output_path)
-
-def add_title_to_video(video_path, title_frame, output_path, duration):
-    video = VideoFileClip(video_path)
+def add_title_to_video(video, title_frame, duration):
 
     title_clip = ImageClip(title_frame, duration = duration)
 
@@ -103,4 +86,4 @@ def add_title_to_video(video_path, title_frame, output_path, duration):
 
     final = CompositeVideoClip([video, title_clip])
 
-    final.write_videofile(output_path)
+    return final

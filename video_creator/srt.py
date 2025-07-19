@@ -24,7 +24,7 @@ def format_srt_time(seconds):
     # Format as HH:MM:SS,ms with leading zeros
     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
 
-def convert_to_srt(alignment_data, max_words_per_caption=2):
+def convert_to_srt(chars,starts,ends, max_words_per_caption=2):
     """
     Converts character-level alignment data into an SRT subtitle string.
 
@@ -38,9 +38,9 @@ def convert_to_srt(alignment_data, max_words_per_caption=2):
     Returns:
         str: The generated SRT subtitle string.
     """
-    chars = alignment_data['characters']
-    starts = alignment_data['character_start_times_seconds']
-    ends = alignment_data['character_end_times_seconds']
+    # chars = alignment_data.characters
+    # starts = alignment_data.character_start_times_seconds
+    # ends = alignment_data.character_end_times_seconds
 
     words = []
     current_word = ""
@@ -120,19 +120,24 @@ def convert_to_srt_story(script, alignment):
 
     title_len = len(f"{script['title']}. ")  # Adjust as needed based on your formatting
 
-    offset_seconds = alignment['character_end_times_seconds'][title_len] 
-    print(f"Title ends at {offset_seconds:.2f} seconds")
+    # offset_seconds = alignment.character_end_times_seconds[title_len] 
+    # print(f"Title ends at {offset_seconds:.2f} seconds")
 
     story_align = alignment.copy()
-    story_align['characters'] = story_align['characters'][title_len:]
-    story_align['character_start_times_seconds'] = story_align['character_start_times_seconds'][title_len:]
-    story_align['character_end_times_seconds'] = story_align['character_end_times_seconds'][title_len:]
+    chars = story_align.characters[title_len:]
+    starts = story_align.character_start_times_seconds[title_len:]
+    ends = story_align.character_end_times_seconds[title_len:]
+
+    # story_align = alignment.copy()
+    # story_align['characters'] = story_align['characters'][title_len:]
+    # story_align['character_start_times_seconds'] = story_align['character_start_times_seconds'][title_len:]
+    # story_align['character_end_times_seconds'] = story_align['character_end_times_seconds'][title_len:]
 
     # story_align['character_start_times_seconds'] = [t + offset_seconds for t in story_align['character_start_times_seconds']]
     # story_align['character_end_times_seconds'] = [t + offset_seconds for t in story_align['character_end_times_seconds']]
 
-    print(story_align)
+    # print(story_align)
 
-    srt = convert_to_srt(story_align)
+    srt = convert_to_srt(chars,starts,ends)
 
     return srt

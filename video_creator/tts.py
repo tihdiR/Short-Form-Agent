@@ -16,5 +16,9 @@ class TTSClient:
         response = self.client.text_to_speech.convert_with_timestamps(
             voice_id=self.voice_id,
             text=text,
+            model_id = "eleven_flash_v2_5",
+            voice_settings={
+                "speed":1.2  # Adjust speed here (e.g., 0.8 for slightly slower)
+            }
         )
         return response

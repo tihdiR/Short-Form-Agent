@@ -2,9 +2,8 @@ from moviepy import VideoFileClip, CompositeVideoClip, TextClip
 from moviepy.video.tools.subtitles import SubtitlesClip
 
 
-def caption_video(video_path: str, srt_path: str, output_path: str = "subtitled_video.mp4"):
+def caption_video(video, srt_path: str):#, output_path: str = "subtitled_video.mp4"):
     # Load video
-    video = VideoFileClip(video_path)
 
     # Create subtitle generator function
     generator = lambda txt: TextClip(
@@ -26,6 +25,8 @@ def caption_video(video_path: str, srt_path: str, output_path: str = "subtitled_
     # Overlay subtitles on the video
     video_with_subs = CompositeVideoClip([video, subtitles])
 
+    return video_with_subs
+
     # Write final output
-    video_with_subs.write_videofile(output_path, codec="libx264", audio_codec="aac")
-    print(f"Saved video with subtitles to: {output_path}")
+    # video_with_subs.write_videofile(output_path, codec="libx264", audio_codec="aac")
+    # print(f"Saved video with subtitles to: {output_path}")
