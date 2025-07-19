@@ -13,7 +13,7 @@ def fetch_stories(limit=5, comments_limit=3):
     )
 
     subreddit = reddit.subreddit("TwoHotTakes")
-    posts = subreddit.top(time_filter="day", limit=limit)
+    posts = subreddit.top(time_filter="week", limit=limit)
 
     stories = []
     for post in posts:

@@ -105,3 +105,34 @@ def convert_to_srt(alignment_data, max_words_per_caption=2):
         srt += f"{i+1}\n{start_time_str} --> {end_time_str}\n{caption_text.strip()}\n\n"
 
     return srt
+
+def convert_to_srt_story(script, alignment):
+    """
+    Converts character-level alignment data into an SRT subtitle string, including a title.
+
+    Args:
+        script (dict): A dictionary containing the script with a 'title' key.
+        alignment (dict): A dictionary containing character-level timing data.
+
+    Returns:
+        str: The generated SRT subtitle string without the title.
+    """
+
+    title_len = len(f"{script['title']}. ")  # Adjust as needed based on your formatting
+
+    offset_seconds = alignment['character_end_times_seconds'][title_len] 
+    print(f"Title ends at {offset_seconds:.2f} seconds")
+
+    story_align = alignment.copy()
+    story_align['characters'] = story_align['characters'][title_len:]
+    story_align['character_start_times_seconds'] = story_align['character_start_times_seconds'][title_len:]
+    story_align['character_end_times_seconds'] = story_align['character_end_times_seconds'][title_len:]
+
+    # story_align['character_start_times_seconds'] = [t + offset_seconds for t in story_align['character_start_times_seconds']]
+    # story_align['character_end_times_seconds'] = [t + offset_seconds for t in story_align['character_end_times_seconds']]
+
+    print(story_align)
+
+    srt = convert_to_srt(story_align)
+
+    return srt

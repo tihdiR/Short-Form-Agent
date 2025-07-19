@@ -5,3 +5,4 @@ elevenlabs
 yt_dlp
 moviepy
 pydub
+pysrt
