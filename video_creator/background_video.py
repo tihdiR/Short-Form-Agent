@@ -81,7 +81,7 @@ def process_background_video(input_path, output_path, target_duration, offset_se
             duration = offset_seconds
         )
     
-    video_with_audio = add_audio(titled, "output/output.wav")
+    video_with_audio = add_audio(titled, "output/test_output2.wav")
 
     video_with_audio.write_videofile(output_path, codec="libx264", audio_codec="aac", fps=30)
 

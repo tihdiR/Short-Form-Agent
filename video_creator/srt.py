@@ -24,7 +24,7 @@ def format_srt_time(seconds):
     # Format as HH:MM:SS,ms with leading zeros
     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
 
-def convert_to_srt(chars,starts,ends, max_words_per_caption=2):
+def convert_to_srt(chars,starts,ends, max_words_per_caption=1):
     """
     Converts character-level alignment data into an SRT subtitle string.
 
@@ -118,7 +118,7 @@ def convert_to_srt_story(script, alignment):
         str: The generated SRT subtitle string without the title.
     """
 
-    title_len = len(f"{script['title']}. ")  # Adjust as needed based on your formatting
+    title_len = len(f"{script['title']} ")  # Adjust as needed based on your formatting
 
     # offset_seconds = alignment.character_end_times_seconds[title_len] 
     # print(f"Title ends at {offset_seconds:.2f} seconds")

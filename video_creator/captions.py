@@ -9,7 +9,7 @@ def caption_video(video, srt_path: str):#, output_path: str = "subtitled_video.m
     generator = lambda txt: TextClip(
         "Impact",
         txt,     
-        font_size=130,
+        font_size=110,
         color="white",
         method="caption",
         size=(video.w, video.h), 

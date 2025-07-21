@@ -18,7 +18,7 @@ class TTSClient:
             text=text,
             model_id = "eleven_flash_v2_5",
             voice_settings={
-                "speed":1.2  # Adjust speed here (e.g., 0.8 for slightly slower)
+                "speed":1.2 
             }
         )
         return response
